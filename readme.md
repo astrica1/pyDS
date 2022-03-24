@@ -1,1 +1,1 @@
-**Python Data Structures Library**
+**Python Data Structures and Algorithms Library**
