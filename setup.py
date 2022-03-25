@@ -7,4 +7,8 @@ setup(
     description='Python Data Structures Library',
     author='astrica1',
     license='MIT',
+    install_requires=[],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest==4.4.1'],
+    test_suite='tests',
 )
