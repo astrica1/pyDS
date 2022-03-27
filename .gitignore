@@ -1,1 +1,12 @@
 __pycache__
+.eggs
+.tox
+.venv
+.mypy_cache
+.pytest_cache
+.coverage
+.cache
+.pytest_cache
+*.egg-info
+.vscode
+main.py
