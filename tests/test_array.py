@@ -96,3 +96,11 @@ def test_array_str():
     arr.Insert(1)
     arr.Insert(2)
     assert str(arr) == '[2, 1, 2, 1, 2, 0, 0, 0, 0, 0]'
+    
+def test_array_remove_duplicate():
+    arr = array.new(max_size=10)
+    arr.value = 'h', 'e', 'l', 'l', 'o', 'w', 'o', 'r', 'l', 'd'
+    arr2 = array.new(max_size=10)
+    arr2.value = 'h', 'e', 'l', 'o', 'w', 'r', 'd'
+    array.remove_duplicates(arr)
+    assert arr == arr2
