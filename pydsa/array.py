@@ -173,10 +173,10 @@ class Array:
             index (int, optional): index of the element to be traversed. Defaults to None.
         """
         if index is None:
-            for i in self._elements:
-                print(i)
+            for element in self._elements:
+                yield element
         else:
-            print(self._elements[index])
+            yield self._elements[index]
     
     def __str__(self):
         return str(self._elements)
@@ -184,6 +184,65 @@ class Array:
     def __repr__(self):
         return self.type + ' : ' + self.__str__()
     
+    def __iter__(self):
+        return self._elements[: self._pointer].__iter__()
+    
+    def __next__(self):
+        self._pointer += 1
+        if self._pointer < self.max_size:
+            return self._elements[self._pointer - 1]
+        raise StopIteration
+    
+    def __len__(self):
+        return self.length
+    
+    def __getitem__(self, index):
+        return self._elements[index]
+    
+    def __setitem__(self, index, element):
+        self.Update(index, element)
+    
+    def __delitem__(self, index):
+        self.Delete(index)
+    
+    def __contains__(self, element):
+        return self.Search(element) != -1
+    
+    def __add__(self, other):
+        if self.type is None and other.type is not None:
+            self.type = other.type
+            self._Initialize()
+        if other.type == self.type:
+            result = Array()
+            result.value = self.value + other.value
+            return result
+        else:
+            raise Exception('Type mismatch')
+    
+    def __radd__(self, other):
+        if self.type is None and other.type is not None:
+            self.type = other.type
+            self._Initialize()
+        if other.type == self.type:
+            result = Array()
+            result.value = other.value + self.value
+            return result
+        else:
+            raise Exception('Type mismatch')
+    
+    def __eq__(self, other):
+        if self.type is None or other.type is None:
+            return False
+        if other.type == self.type:
+            return self.value == other.value
+        return False
+    
+    def __ne__(self, other):
+        return not self.__eq__(other)
+    
+    def __type__(self):
+        return self.type
+        
     @property
     def length(self):
         return self._pointer
@@ -197,6 +256,20 @@ class Array:
         if self._type is None:
             return '<class \'array\'>'
         return '<class \'' + str(self._type)[8 : -2] + ' array\'>'
+    
+    @type.setter
+    def type(self, type):
+        if type is None:
+            raise Exception('Type is None')
+        for acceptable_type in self._accepted_types:
+            if acceptable_type['name'] in str(type):
+                type = acceptable_type['type']
+                break
+        if self._type is None:
+            self._type = type
+            self._Initialize()
+        else:
+            raise Exception('Type already set')
     
     @property
     def value(self):
