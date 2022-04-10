@@ -5,17 +5,16 @@ class Node:
         self.prev = prev
     
     def Insert(self, data):
-        node = Node(data, self.next, self)
+        node = Node(data)
         node.next = self.next
         node.prev = self
-        self.next.prev = node
         self.next = node
         return node
     
     def Delete(self):
         self.prev.next = self.next
         self.next.prev = self.prev
-        return self.next
+        return self.prev
     
     def __str__(self):
         return str(self.data)
@@ -185,6 +184,16 @@ class LinkedList:
     
     def __repr__(self):
         return '<class \'linked list\'> : ' + (str(self) if self._head is not None else 'null')
+    
+    def __iter__(self):
+        return self
+    
+    def __next__(self):
+        if self._head is None:
+            raise StopIteration
+        current = self._head
+        self._head = self._head.next
+        return current
     
     @property
     def length(self):
