@@ -61,5 +61,30 @@ class Stack:
             raise StopIteration
         return self._items.pop()
     
-def new():
-    return Stack()
+    @property
+    def length(self):
+        return self._pointer
+    
+    @property
+    def items(self):
+        return self._items
+    
+    @items.setter
+    def items(self, items):
+        self._items = []
+        self._pointer = 0
+        for i in items:
+            self.Push(i)
+    
+    @items.deleter
+    def items(self):
+        self._items = []
+        self._pointer = 0
+    
+def new(max_size: int = None):
+    """ Returns a new stack
+    
+    Args:
+        max_size: The maximum size of the stack
+    """
+    return Stack(max_size)
