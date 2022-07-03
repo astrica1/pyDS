@@ -29,18 +29,18 @@ class Node:
     def __ne__(self, other):
         return not self.__eq__(other)
 
-class LinkedList:
+class __LinkedList:
     def __init__(self, head: Node = None):
-        self._head = head
-        self._tail = head
-        self._length = 0 if head is None else 1
-        self._Initialize()
+        self.__head = head
+        self.__tail = head
+        self.__length = 0 if head is None else 1
+        self.__Initialize()
     
-    def _Initialize(self):
-        if self._tail is not None:
-            while self._tail.next is not None:
-                self._tail = self._tail.next
-                self._length += 1
+    def __Initialize(self):
+        if self.__tail is not None:
+            while self.__tail.next is not None:
+                self.__tail = self.__tail.next
+                self.__length += 1
         
     def Insert(self, data):
         """ Inserts a new node at the end of the list
@@ -49,14 +49,14 @@ class LinkedList:
             data: The data to be inserted
         """
         newNode = Node(data)
-        if self._head is None:
-            self._head = newNode
-            self._tail = newNode
+        if self.__head is None:
+            self.__head = newNode
+            self.__tail = newNode
         else:
-            self._tail.next = newNode
-            newNode.prev = self._tail
-            self._tail = newNode
-        self._length += 1
+            self.__tail.next = newNode
+            newNode.prev = self.__tail
+            self.__tail = newNode
+        self.__length += 1
     
     def Delete(self, data):
         """ Deletes the first node with the given data
@@ -64,20 +64,20 @@ class LinkedList:
         Args:
             data: The data to be deleted
         """
-        if self._head is None:
+        if self.__head is None:
             return
         
-        if self._head.data == data:
-            self._head = self._head.next
-            self._length -= 1
+        if self.__head.data == data:
+            self.__head = self.__head.next
+            self.__length -= 1
             return
         
-        current = self._head
+        current = self.__head
         
         while current.next is not None:
             if current.next.data == data:
                 current.next = current.next.next
-                self._length -= 1
+                self.__length -= 1
                 return
             
             current = current.next
@@ -89,13 +89,13 @@ class LinkedList:
         Args:
             data: The data to be searched
         """
-        if self._head is None:
+        if self.__head is None:
             return False
         
-        if self._head.data == data:
-            return self._head
+        if self.__head.data == data:
+            return self.__head
         
-        current = self._head
+        current = self.__head
         while current.next is not None:
             if current.data == data:
                 return current
@@ -104,11 +104,11 @@ class LinkedList:
     
     def Display(self):
         """ Displays the list in a human readable format """
-        if self._head is None:
+        if self.__head is None:
             print("Empty list")
             return
         
-        current = self._head
+        current = self.__head
         while current is not None:
             print(current.data, end = "" if current.next is None else " -> ")
             current = current.next
@@ -116,25 +116,25 @@ class LinkedList:
     
     def DeleteAll(self):
         """ Deletes all nodes in the list """
-        self._head = None
-        self._tail = None
-        self._length = 0
+        self.__head = None
+        self.__tail = None
+        self.__length = 0
     
     def DeleteFirst(self):
         """ Deletes the first node in the list """
-        if self._head is None:
+        if self.__head is None:
             return
         
-        self._head = self._head.next
-        self._length -= 1
+        self.__head = self.__head.next
+        self.__length -= 1
         
     def DeleteLast(self):
         """ Deletes the last node in the list """
-        if self._tail is None:
+        if self.__tail is None:
             return
         
-        self._tail = self._tail.prev
-        self._length -= 1
+        self.__tail = self.__tail.prev
+        self.__length -= 1
     
     def GetByIndex(self, index):
         """ Gets the node at the given index
@@ -142,10 +142,10 @@ class LinkedList:
         Args:
             index: The index of the node to be returned
         """
-        if index < 0 or index >= self._length:
+        if index < 0 or index >= self.__length:
             return None
         
-        current = self._head
+        current = self.__head
         for _ in range(index):
             current = current.next
         return current
@@ -156,7 +156,7 @@ class LinkedList:
         Args:
             index: The index of the node to be deleted
         """
-        if index < 0 or index >= self._length:
+        if index < 0 or index >= self.__length:
             return
         current = self.GetByIndex(index)
         current.prev.next = current.next
@@ -164,16 +164,16 @@ class LinkedList:
     
     def IsEmpty(self):
         """ Returns True if the list is empty, False otherwise """
-        return self._length == 0
+        return self.__length == 0
     
     def __len__(self):
-        return self._length
+        return self.__length
     
     def __str__(self):
-        if self._head is None:
+        if self.__head is None:
             return ''
         
-        current = self._head
+        current = self.__head
         string = ''
         while current is not None:
             string += str(current.data)
@@ -183,29 +183,30 @@ class LinkedList:
         return string
     
     def __repr__(self):
-        return '<class \'linked list\'> : ' + (str(self) if self._head is not None else 'null')
+        return '<class \'linked list\'> : ' + (str(self) if self.__head is not None else 'null')
     
     def __iter__(self):
         return self
     
     def __next__(self):
-        if self._head is None:
+        if self.__head is None:
             raise StopIteration
-        current = self._head
-        self._head = self._head.next
+        current = self.__head
+        self.__head = self.__head.next
         return current
     
     @property
     def length(self):
-        return self._length
+        return self.__length
     
     @property
     def head(self):
-        return self._head
+        return self.__head
     
     @property
     def tail(self):
-        return self._tail
+        return self.__tail
 
 def new(head: Node = None):
-    return LinkedList(head)
+    """ Creates a new linked list with the given head node """
+    return __LinkedList(head)
