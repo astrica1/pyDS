@@ -1,5 +1,5 @@
-class Array:
-    def __init__(self, type: type = None, max_size: int = None):
+class __Array:
+    def __init__(self, type = None, max_size: int = None):
         """ Initialize an array.
 
         Args:
@@ -11,21 +11,21 @@ class Array:
             Exception: if max_size is less than 1.
             Exception: if type is not int, str, float, bool or None.
         """
-        self._elements = []
-        self._pointer = 0
+        self.__elements = []
+        self.__pointer = 0
         self.max_size = max_size
-        self._type = type
-        self._accepted_types = [
+        self.__type = type
+        self.__accepted_types = [
             {'type': int, 'name': 'int', 'default': 0},
             {'type': str, 'name': 'str', 'default': ''},
             {'type': float, 'name': 'float', 'default': 0.0},
             {'type': bool, 'name': 'bool', 'default': False},
             {'type': chr, 'name': 'chr', 'default': ' '}
         ]
-        self._accepted_groups = [tuple, list, set]
-        self._Initialize()
+        self.__accepted_groups = [tuple, list, set]
+        self.__Initialize()
         
-    def _Initialize(self):
+    def __Initialize(self):
         if self.max_size is not None:
             if type(self.max_size) is not int:
                 raise Exception('max_size must be an integer')
@@ -33,35 +33,35 @@ class Array:
                 raise Exception('max_size must be greater than 0')
             self.max_size = int(self.max_size)
         
-        if self._type is not None:
-            if self._type not in [types_list['type'] for types_list in self._accepted_types]:
+        if self.__type is not None:
+            if self.__type not in [types_list['type'] for types_list in self.__accepted_types]:
                 types = ''
-                for i in self._accepted_types:
+                for i in self.__accepted_types:
                     types += str(i['name']) + ', '
                 types = types[:-2] + ' or None'
                 raise Exception('type must be ' + types)
 
         if self.max_size is not None:
-            for i in self._accepted_types:
-                if i['type'] == self._type:
-                    self._elements = [i['default']] * self.max_size
+            for i in self.__accepted_types:
+                if i['type'] == self.__type:
+                    self.__elements = [i['default']] * self.max_size
                     break
     
-    def _Clear(self, index: int = None):
+    def __Clear(self, index: int = None):
         if index is None:
-            self._elements = []
-            self._pointer = 0
-            self._Initialize()
+            self.__elements = []
+            self.__pointer = 0
+            self.__Initialize()
         else:
             if index < 0:
-                index = self._pointer + index
-            if index < 0 or index >= self._pointer:
+                index = self.__pointer + index
+            if index < 0 or index >= self.__pointer:
                 raise Exception('Index out of range')
-            default_value = [types_list for types_list in self._accepted_types if types_list['type'] == self._type][0]['default']
-            self._elements = self._elements[: index] + self._elements[index + 1 :] + [default_value]
-            self._pointer -= 1
+            default_value = [types_list for types_list in self.__accepted_types if types_list['type'] == self.__type][0]['default']
+            self.__elements = self.__elements[: index] + self.__elements[index + 1 :] + [default_value]
+            self.__pointer -= 1
             
-    def _TypeValidator(self, element):
+    def __typeValidator(self, element):
         Response = [
             {'code': 0, 'message': 'OK'},
             {'code': 1, 'message': 'Type mismatch'},
@@ -70,15 +70,15 @@ class Array:
             {'code': 4, 'message': 'Type is a group'}
         ]
         
-        if self._type is None and type(element) in [types_list['type'] for types_list in self._accepted_types]:
-            self._type = type(element)
-            self._Initialize()
+        if self.__type is None and type(element) in [types_list['type'] for types_list in self.__accepted_types]:
+            self.__type = type(element)
+            self.__Initialize()
             return Response[0]
-        elif self._type is not None and type(element) is self._type:
+        elif self.__type is not None and type(element) is self.__type:
             return Response[0]
-        elif type(element) in self._accepted_groups:
+        elif type(element) in self.__accepted_groups:
             return Response[4]
-        elif self._type is not None and type(element) is not self._type:
+        elif self.__type is not None and type(element) is not self.__type:
             return Response[1]
         elif type(element) is None:
             return Response[3]
@@ -91,7 +91,7 @@ class Array:
         Returns:
             bool: True if the array is full, False otherwise.
         """
-        return self.max_size is not None and self._pointer == self.max_size
+        return self.max_size is not None and self.__pointer == self.max_size
 
     def IsEmpty(self):
         """ Check if the array is empty.
@@ -99,23 +99,23 @@ class Array:
         Returns:
             bool: True if the array is empty, False otherwise.
         """
-        return self._pointer == 0
+        return self.__pointer == 0
     
-    def _Append(self, element):
+    def __Append(self, element):
         if self.IsFull():
             raise Exception('Array is full')
         else:
-            if self._TypeValidator(element)['code'] == 0:
+            if self.__typeValidator(element)['code'] == 0:
                 if self.max_size is None:
-                    self._elements.append(element)
+                    self.__elements.append(element)
                 else:
-                    self._elements[self._pointer] = element
-                self._pointer += 1
-            elif self._TypeValidator(element)['code'] == 4:
+                    self.__elements[self.__pointer] = element
+                self.__pointer += 1
+            elif self.__typeValidator(element)['code'] == 4:
                 for i in element:
-                    self._Append(i)
+                    self.__Append(i)
             else:
-                raise Exception(self._TypeValidator(element)['message'])
+                raise Exception(self.__typeValidator(element)['message'])
     
     def Insert(self, *args):
         """ Insert elements into the array.
@@ -124,7 +124,7 @@ class Array:
             *args: elements to be inserted.
         """
         for element in args:
-            self._Append(element)
+            self.__Append(element)
     
     def Update(self, index: int, element):
         """ Update an element in the array.
@@ -133,10 +133,10 @@ class Array:
             index (int): index of the element to be updated.
             element (any): new element.
         """
-        if self._TypeValidator(element)['code'] == 0:
-            self._elements[index] = element
+        if self.__typeValidator(element)['code'] == 0:
+            self.__elements[index] = element
         else:
-            raise Exception(self._TypeValidator(element)['message'])
+            raise Exception(self.__typeValidator(element)['message'])
     
     def Delete(self, index: int = None):
         """ Delete an element from the array.
@@ -148,9 +148,9 @@ class Array:
             if self.IsEmpty():
                 raise Exception('Array is empty')
             else:
-                self._Clear(self._pointer - 1)
+                self.__Clear(self.__pointer - 1)
         else:
-            self._Clear(index)
+            self.__Clear(index)
     
     def Search(self, element):
         """ Search for an element in the array.
@@ -161,8 +161,8 @@ class Array:
         Returns:
             int: index of the element if found, -1 otherwise.
         """
-        for i in range(self._pointer):
-            if element == self._elements[i]:
+        for i in range(self.__pointer):
+            if element == self.__elements[i]:
                 return i
         return -1
     
@@ -173,31 +173,31 @@ class Array:
             index (int, optional): index of the element to be traversed. Defaults to None.
         """
         if index is None:
-            for element in self._elements:
+            for element in self.__elements:
                 yield element
         else:
-            yield self._elements[index]
+            yield self.__elements[index]
     
     def __str__(self):
-        return str(self._elements)
+        return str(self.__elements)
     
     def __repr__(self):
         return self.type + ' : ' + self.__str__()
     
     def __iter__(self):
-        return self._elements[: self._pointer].__iter__()
+        return self.__elements[: self.__pointer].__iter__()
     
     def __next__(self):
-        self._pointer += 1
-        if self._pointer < self.max_size:
-            return self._elements[self._pointer - 1]
+        self.__pointer += 1
+        if self.__pointer < self.max_size:
+            return self.__elements[self.__pointer - 1]
         raise StopIteration
     
     def __len__(self):
         return self.length
     
     def __getitem__(self, index):
-        return self._elements[index]
+        return self.__elements[index]
     
     def __setitem__(self, index, element):
         self.Update(index, element)
@@ -211,9 +211,9 @@ class Array:
     def __add__(self, other):
         if self.type is None and other.type is not None:
             self.type = other.type
-            self._Initialize()
+            self.__Initialize()
         if other.type == self.type:
-            result = Array()
+            result = __Array()
             result.value = self.value + other.value
             return result
         else:
@@ -222,9 +222,9 @@ class Array:
     def __radd__(self, other):
         if self.type is None and other.type is not None:
             self.type = other.type
-            self._Initialize()
+            self.__Initialize()
         if other.type == self.type:
-            result = Array()
+            result = __Array()
             result.value = other.value + self.value
             return result
         else:
@@ -240,12 +240,12 @@ class Array:
     def __ne__(self, other):
         return not self.__eq__(other)
     
-    def __type__(self):
+    def ___type__(self):
         return self.type
         
     @property
     def length(self):
-        return self._pointer
+        return self.__pointer
     
     @property
     def size(self):
@@ -253,38 +253,38 @@ class Array:
     
     @property
     def type(self):
-        if self._type is None:
+        if self.__type is None:
             return '<class \'array\'>'
-        return '<class \'' + str(self._type)[8 : -2] + ' array\'>'
+        return '<class \'' + str(self.__type)[8 : -2] + ' array\'>'
     
     @type.setter
     def type(self, type):
         if type is None:
             raise Exception('Type is None')
-        for acceptable_type in self._accepted_types:
-            if acceptable_type['name'] in str(type):
-                type = acceptable_type['type']
+        for acceptable__type in self.__accepted_types:
+            if acceptable__type['name'] in str(type):
+                type = acceptable__type['type']
                 break
-        if self._type is None:
-            self._type = type
-            self._Initialize()
+        if self.__type is None:
+            self.__type = type
+            self.__Initialize()
         else:
             raise Exception('Type already set')
     
     @property
     def value(self):
-        return self._elements
+        return self.__elements
     
     @value.setter
     def value(self, value):
-        self._Clear()
+        self.__Clear()
         self.Insert(value)
     
     @value.deleter
     def value(self):
-        self._Clear()
+        self.__Clear()
 
-def new(type: type = None, max_size: int = None):
+def new(type = None, max_size: int = None):
     """ Create a new array.
 
     Args:
@@ -294,31 +294,17 @@ def new(type: type = None, max_size: int = None):
     Returns:
         Array: new array.
     """
-    return Array(type, max_size)
+    return __Array(type, max_size)
 
-def is_full(array: Array):
-    """ Check if the array is full.
-
-    Args:
-        array (Array): array to be checked.
-
-    Returns:
-        bool: True if the array is full, False otherwise.
-    """
+def is_full(array):
+    """ Returns True if the queue is full, False otherwise """
     return array.IsFull()
 
-def is_empty(array: Array):
-    """ Check if the array is empty.
-
-    Args:
-        array (Array): array to be checked.
-
-    Returns:
-        bool: True if the array is empty, False otherwise.
-    """
+def is_empty(array):
+    """ Returns True if the queue is empty, False otherwise """
     return array.IsEmpty()
 
-def search(array: Array, element):
+def search(array, element):
     """ Search for an element in the array.
 
     Args:
@@ -330,16 +316,7 @@ def search(array: Array, element):
     """
     return array.Search(element)
 
-def traverse(array: Array, index: int = None):
-    """ Traverse the array.
-
-    Args:
-        array (Array): array to be traversed.
-        index (int, optional): index of the element to be traversed. Defaults to None.
-    """
-    array.Traverse(index)
-
-def len(array: Array):
+def len(array):
     """ Get the length of the array.
 
     Args:
@@ -350,7 +327,7 @@ def len(array: Array):
     """
     return array.length
 
-def size(array: Array):
+def size(array):
     """ Get the size of the array.
 
     Args:
@@ -360,14 +337,3 @@ def size(array: Array):
         int: size of the array.
     """
     return array.size
-
-def remove_duplicates(array: Array):
-    """ Remove duplicate elements from the array.
-
-    Args:
-        array (Array): array to be checked.
-    """
-    for i in range(array.length):
-        for j in range(i + 1, array.length):
-            if array._elements[i] == array._elements[j]:
-                array._Clear(j)
