@@ -1,16 +1,16 @@
-class Stack:
+class __Stack:
     def __init__(self, max_size: int = None):
-        self._items = []
-        self._pointer = 0
-        self._max_size = max_size
+        self.__items = []
+        self.__pointer = 0
+        self.__max_size = max_size
     
     def IsFull(self):
         """ Returns True if the stack is full, False otherwise """
-        return self._max_size is not None and self._pointer == self._max_size
+        return self.__max_size is not None and self.__pointer == self.__max_size
     
     def IsEmpty(self):
         """ Returns True if the stack is empty, False otherwise """
-        return self._pointer == 0
+        return self.__pointer == 0
     
     def Push(self, item):
         """ Pushes an item onto the stack
@@ -20,8 +20,8 @@ class Stack:
         """
         if self.IsFull():
             raise Exception('Stack is full')
-        self._items.append(item)
-        self._pointer += 1
+        self.__items.append(item)
+        self.__pointer += 1
     
     def Pop(self):
         """ Pops an item off the stack
@@ -31,8 +31,8 @@ class Stack:
         """
         if self.IsEmpty():
             raise Exception('Stack is empty')
-        self._pointer -= 1
-        return self._items.pop()
+        self.__pointer -= 1
+        return self.__items.pop()
     
     def Peek(self):
         """ Returns the top item on the stack without removing it
@@ -42,49 +42,49 @@ class Stack:
         """
         if self.IsEmpty():
             raise Exception('Stack is empty')
-        return self._items[-1]
+        return self.__items[-1]
     
     def __len__(self):
-        return self._pointer
+        return self.__pointer
     
     def __str__(self):
-        return str(self._items)
+        return str(self.__items)
     
     def __repr__(self):
-        return '<class \'stack\'> : ' + str(self._items)
+        return '<class \'stack\'> : ' + str(self.__items)
     
     def __iter__(self):
-        return self._items.__reversed__().__iter__()
+        return self.__items.__reversed__().__iter__()
     
     def __next__(self):
-        if len(self._items) == 0:
+        if len(self.__items) == 0:
             raise StopIteration
-        return self._items.pop()
+        return self.__items.pop()
     
     @property
     def length(self):
-        return self._pointer
+        return self.__pointer
     
     @property
     def items(self):
-        return self._items
+        return self.__items
     
     @items.setter
     def items(self, items):
-        self._items = []
-        self._pointer = 0
+        self.__items = []
+        self.__pointer = 0
         for i in items:
             self.Push(i)
     
     @items.deleter
     def items(self):
-        self._items = []
-        self._pointer = 0
+        self.__items = []
+        self.__pointer = 0
     
 def new(max_size: int = None):
-    """ Returns a new stack
+    """ Create a new stack
     
     Args:
         max_size: The maximum size of the stack
     """
-    return Stack(max_size)
+    return __Stack(max_size)
